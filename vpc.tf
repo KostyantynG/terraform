@@ -78,15 +78,22 @@ resource "aws_route_table_association" "public_subnet_2_association" {
   route_table_id = aws_route_table.public_route_table.id
 }
 
-resource "aws_security_group" "ssh_security" {
-  name        = "allow_ssh"
-  description = "Allow SSH"
+resource "aws_security_group" "ssh_http_security" {
+  name        = "allow_ssh_http"
   vpc_id      = aws_vpc.myvpc.id
 
   ingress {
     description = "SSH"
     from_port   = 22
     to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -100,19 +107,19 @@ resource "aws_security_group" "ssh_security" {
   }
 
   tags = {
-    Name = "Allow SSH"
+    Name = "Allow SSH and HTTP"
   }
 }
 
 resource "aws_instance" "first_instance" {
-  ami                         = "ami-019d533b7b2201eff"
+  ami                         = "ami-08e2d37b6a0129927"
   instance_type               = "t2.micro"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public_subnet_1.id
-  vpc_security_group_ids      = [aws_security_group.ssh_security.id]
+  vpc_security_group_ids      = [aws_security_group.ssh_http_security.id]
   key_name                    = "vockey"
   user_data = file("userdata.sh")
   tags = {
-    Name = "Suse instance"
+    Name = "Amazon_Linux_2_t2_micro"
   }
 }
