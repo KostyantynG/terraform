@@ -3,7 +3,7 @@ resource "aws_instance" "first_instance" {
   instance_type               = "t2.micro"
   associate_public_ip_address = true
   subnet_id                   = aws_subnet.public_subnet_1.id
-  vpc_security_group_ids      = [aws_security_group.ssh_http_security.id]
+  vpc_security_group_ids      = [aws_security_group.ssh_http_https_security.id]
   key_name                    = "vockey"
   user_data = file("userdata.sh")
   tags = {
