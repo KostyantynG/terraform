@@ -1,6 +1,6 @@
 #!/bin/bash
 cd /home/ec2-user
-echo "Hello, my fellow turtles!" > turtles.txt
+echo "Hello, fellow turtles!" > turtles.txt
 yum update -y
 echo "Install and configure web server"
 yum install -y httpd
