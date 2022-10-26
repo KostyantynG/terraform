@@ -5,7 +5,7 @@ resource "aws_instance" "first_instance" {
   subnet_id                   = aws_subnet.public_subnet_1.id
   vpc_security_group_ids      = [aws_security_group.ssh_http_security.id]
   key_name                    = "vockey"
-  user_data = file("userdata.sh")
+  user_data                   = file("userdata.sh")
   tags = {
     Name = "Amazon_Linux_2_t2_micro"
   }

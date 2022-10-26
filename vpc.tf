@@ -83,8 +83,8 @@ resource "aws_route_table_association" "public_subnet_2_association" {
 
 # Create a Security Group
 resource "aws_security_group" "ssh_http_security" {
-  name        = "allow_ssh_http"
-  vpc_id      = aws_vpc.myvpc.id
+  name   = "allow_ssh_http"
+  vpc_id = aws_vpc.myvpc.id
 
   ingress {
     description = "SSH"
@@ -112,5 +112,19 @@ resource "aws_security_group" "ssh_http_security" {
 
   tags = {
     Name = "Allow SSH and HTTP"
+  }
+}
+
+resource "aws_lb" "test" {
+  name               = "test-lb-tf"
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.ssh_http_security.id]
+  subnets            = [aws_subnet.public_subnet_1.id, aws_subnet.public_subnet_2.id]
+
+  enable_deletion_protection = true
+
+  tags = {
+    Environment = "production"
   }
 }
