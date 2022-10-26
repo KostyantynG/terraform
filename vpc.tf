@@ -51,10 +51,12 @@ resource "aws_subnet" "private_subnet_2" {
   }
 }
 
+# Create an Internet Gateway
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.myvpc.id
 }
 
+# Create a public Route Table
 resource "aws_route_table" "public_route_table" {
   vpc_id = aws_vpc.myvpc.id
 
@@ -68,6 +70,7 @@ resource "aws_route_table" "public_route_table" {
   }
 }
 
+# Associate public Route Table with Public Subnets
 resource "aws_route_table_association" "public_subnet_1_association" {
   subnet_id      = aws_subnet.public_subnet_1.id
   route_table_id = aws_route_table.public_route_table.id
@@ -78,6 +81,7 @@ resource "aws_route_table_association" "public_subnet_2_association" {
   route_table_id = aws_route_table.public_route_table.id
 }
 
+# Create a Security Group
 resource "aws_security_group" "ssh_http_security" {
   name        = "allow_ssh_http"
   vpc_id      = aws_vpc.myvpc.id
