@@ -128,3 +128,16 @@ resource "aws_lb" "test" {
     Environment = "production"
   }
 }
+
+resource "aws_lb_target_group" "test" {
+  name     = "tf-example-lb-tg"
+  port     = 80
+  protocol = "HTTP"
+  vpc_id   = aws_vpc.myvpc.id
+}
+
+resource "aws_lb_target_group_attachment" "test" {
+  target_group_arn = aws_lb_target_group.test.arn
+  target_id        = aws_instance.first_instance.id
+  port             = 80
+}
